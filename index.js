@@ -1,6 +1,9 @@
 
-import Pusher from "pusher-js";
-import Pairs from "./src/pairs";
+//import Pusher from "pusher-js";
+//import Pairs from "./src/pairs";
+
+const Pusher = require( "pusher-js");
+const Pairs = require ("./src/pairs");
 
 const PUSHER_KEY = 'de504dc5763aeef9ff52';
 
@@ -39,6 +42,7 @@ let trades = function(pair) {
 };
 
 trades(Pairs.ETH_USD);
+
 //trades(Pairs.LTC_BTC);
 trades(Pairs.BTC_USD);
 
