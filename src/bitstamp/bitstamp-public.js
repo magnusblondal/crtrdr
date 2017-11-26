@@ -1,14 +1,8 @@
-const Http = require("./http");
-const ora = require('ora');
+let Bitstamp = require('./bitstamp');
 
-class Bitstamp {
-  constructor(signature) {
-    this.signature = signature;
-    this.url = {
-      base: "https://www.bitstamp.net/api/v2",
-      balance: "https://www.bitstamp.net/api/v2/balance/",
-      conversionRateEurUsd: "https://www.bitstamp.net/api/eur_usd/",
-    }
+class PublicBitstamp extends Bitstamp{
+  constructor() {
+    super();
   }
 
   ticker(currency_pair, err, callback) {
@@ -39,24 +33,6 @@ class Bitstamp {
   conversionRateEurUsd(err, callback) {
     this._get(this.url.conversionRateEurUsd, callback);
   }
-
-  balance(err, callback){
-    this._post(this.url.balance, callback);
-  }
-
-  _post(url, callback){
-    const spinner = ora('Loading data').start();
-    new Http(url).post(this.signature(), (response)=>{
-      spinner.stop();
-      callback(response.data);
-    })
-  }
-
-  _get(url, callback){
-    new Http(url).get((response)=>{
-      callback(response.data);
-    });
-  }
 }
 
-module.exports = Bitstamp;
+module.exports = PublicBitstamp;
