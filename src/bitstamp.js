@@ -44,10 +44,14 @@ class Bitstamp {
     });
   }
 
-  conversionRateEurUsd() {
-    const url = `https://www.bitstamp.net/api/eur_usd/`
-    get(url, (response) => {
-      console.log(response.data);
+  conversionRateEurUsd(err, callback) {
+    const url = `https://www.bitstamp.net/api/eur_usd/`;
+    this._get(url, callback);
+  }
+
+  _get(url, callback){
+    new Http(url).get((response)=>{
+      callback(response.data);
     });
   }
 
