@@ -1,10 +1,9 @@
 
 const stream = require('./src/stream');
 const pairs = require ("./src/pairs");
-const get = require ("./src/get");
-const bit = require('./src/bitstamp');
+const Bitstamp = require('./src/bitstamp');
+const signer = require('./src/bitstamp-signature');
 
-console.log('hoho')
 // stream(pairs.BTC_USD);
 
 // get(pairs.BTC_USD);
@@ -15,9 +14,13 @@ const timeframe = {
   day: 'day'
 };
 
-const b = new bit();
-b.ticker(pairs.BTC_USD);
-// b.orderBook(pairs.BTC_USD);
-// b.hourlyTicker(pairs.BTC_USD);
-// b.transactions(pairs.BTC_USD, timeframe.minute);
-// b.conversionRateEurUsd();
+const b = new Bitstamp(signer);
+// b.ticker(pairs.BTC_USD, (err)=>{}, (data)=>{console.log(data)});
+// b.orderBook(pairs.BTC_USD, (err)=>{}, (data)=>{console.log(data)});
+// b.hourlyTicker(pairs.BTC_USD, (err)=>{}, (data)=>{console.log(data)});
+// b.transactions(pairs.BTC_USD, timeframe.minute, (err)=>{}, (data)=>{console.log(data)});
+// b.tradingPairsInfo((err)=>{}, (data)=>{console.log(data)});
+// b.conversionRateEurUsd((err)=>{}, (data)=>{console.log(data)});
+b.balance((err)=>{}, (data)=> {
+  console.log(data);
+});
