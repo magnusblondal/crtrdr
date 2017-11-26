@@ -4,54 +4,54 @@ const ora = require('ora');
 
 class Bitstamp {
   constructor() {
-    this.tickerUrl = `https://www.bitstamp.net/api/v2/ticker/`;
-    this.baseUrl = `https://www.bitstamp.net/api/v2`;
+    this.url = {
+      base: "https://www.bitstamp.net/api/v2",
+      balance: "https://www.bitstamp.net/api/v2/balance/",
+      conversionRateEurUsd: "https://www.bitstamp.net/api/eur_usd/",
+    }
   }
 
   ticker(currency_pair, err, callback) {
-    const url = `${this.baseUrl}/ticker/${currency_pair}/`;
+    const url = `${this.url.base}/ticker/${currency_pair}/`;
     this._get(url, callback);
   };
 
   hourlyTicker(currency_pair, err, callback) {
-    const url = `${this.baseUrl}/ticker_hour/${currency_pair}/`;
+    const url = `${this.url.base}/ticker_hour/${currency_pair}/`;
     this._get(url, callback);
   };
 
   orderBook(currency_pair, err, callback) {
-    const url = `${this.baseUrl}/order_book/${currency_pair}/`;
+    const url = `${this.url.base}/order_book/${currency_pair}/`;
     this._get(url, callback);
   }
 
   transactions(currency_pair, timeframe='hour', err, callback) {
-    const url = `${this.baseUrl}/transactions/${currency_pair}/?time=${timeframe}`;
+    const url = `${this.url.base}/transactions/${currency_pair}/?time=${timeframe}`;
     this._get(url, callback);
   }
 
   tradingPairsInfo(err, callback) {
-    const url = `${this.baseUrl}/trading-pairs-info`;
+    const url = `${this.url.base}/trading-pairs-info`;
     this._get(url, callback);
   }
 
   conversionRateEurUsd(err, callback) {
-    const url = `https://www.bitstamp.net/api/eur_usd/`;
-    this._get(url, callback);
+    this._get(this.url.conversionRateEurUsd, callback);
+  }
+
+  balance(callback){
+    const spinner = ora('Loading data').start();
+    new Http(this.url.balance).post(this._sign(), (response)=>{
+      spinner.stop();
+      callback(response.data);
+    })
   }
 
   _get(url, callback){
     new Http(url).get((response)=>{
       callback(response.data);
     });
-  }
-
-  balance(callback){
-    const url = "https://www.bitstamp.net/api/v2/balance/";
-    const spinner = ora('Loading data').start();
-
-    new Http(url).post(this._sign(), (response)=>{
-      spinner.stop();
-      callback(response.data);
-    })
   }
 
   _sign() {
