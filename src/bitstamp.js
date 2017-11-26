@@ -1,4 +1,3 @@
-const get = require('./get');
 const crypto = require('crypto-js');
 const Http = require("./http");
 const ora = require('ora');
@@ -9,39 +8,29 @@ class Bitstamp {
     this.baseUrl = `https://www.bitstamp.net/api/v2`;
   }
 
-  ticker(currency_pair) {
+  ticker(currency_pair, err, callback) {
     const url = `${this.baseUrl}/ticker/${currency_pair}/`;
-    get(url, (response) => {
-      console.log(response.data);
-    })
+    this._get(url, callback);
   };
 
-  hourlyTicker(currency_pair) {
+  hourlyTicker(currency_pair, err, callback) {
     const url = `${this.baseUrl}/ticker_hour/${currency_pair}/`;
-    get(url, (response) => {
-      console.log(response.data);
-    })
+    this._get(url, callback);
   };
 
-  orderBook(currency_pair) {
+  orderBook(currency_pair, err, callback) {
     const url = `${this.baseUrl}/order_book/${currency_pair}/`;
-    get(url, (response) => {
-      console.log(response.data);
-    });
+    this._get(url, callback);
   }
 
-  transactions(currency_pair, timeframe='hour') {
+  transactions(currency_pair, timeframe='hour', err, callback) {
     const url = `${this.baseUrl}/transactions/${currency_pair}/?time=${timeframe}`;
-    get(url, (response) => {
-      console.log(response.data);
-    });
+    this._get(url, callback);
   }
 
-  tradingPairsInfo() {
+  tradingPairsInfo(err, callback) {
     const url = `${this.baseUrl}/trading-pairs-info`;
-    get(url, (response) => {
-      console.log(response.data);
-    });
+    this._get(url, callback);
   }
 
   conversionRateEurUsd(err, callback) {

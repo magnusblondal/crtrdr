@@ -6,6 +6,13 @@ class Http {
     this.url = url
   };
 
+  get(handler) {
+    axios.get(this.url)
+      .then(function (response) {
+        handler(response);
+      });
+  };
+
   post(body, handler) {
     axios.post(this.url, querystring.stringify(body))
     .then(function (response) {
