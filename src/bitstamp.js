@@ -40,9 +40,13 @@ class Bitstamp {
     this._get(this.url.conversionRateEurUsd, callback);
   }
 
-  balance(callback){
+  balance(err, callback){
+    this._post(this.url.balance, callback);
+  }
+
+  _post(url, callback){
     const spinner = ora('Loading data').start();
-    new Http(this.url.balance).post(this._sign(), (response)=>{
+    new Http(url).post(this._sign(), (response)=>{
       spinner.stop();
       callback(response.data);
     })
