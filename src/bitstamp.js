@@ -53,24 +53,25 @@ class Bitstamp {
 
   balance(callback){
     const url = "https://www.bitstamp.net/api/v2/balance/";
-    const nonce = Date.now().valueOf();
+    const spinner = ora('Loading data').start();
 
+    new Http(url).post(this.sign(), (response)=>{
+      spinner.stop();
+      callback(response.data);
+    })
+  }
+
+  sign() {
+    const nonce = Date.now().valueOf();
     const message = nonce.toString() + this.config().user + this.config().key;
     const sign = crypto.HmacSHA256(message, this.config().secret);
     const signature = crypto.enc.Hex.stringify(sign).toUpperCase();
 
-    const body = {
+    return {
       signature: signature,
       key: this.config().key,
       nonce: nonce
     };
-    const spinner = ora('Loading data').start();
-    const http = new Http(url);
-
-    http.post(body, (response)=>{
-      spinner.stop();
-      callback(response.data);
-    })
   }
 
   config() {
